@@ -12,7 +12,6 @@ import java.util.Arrays;
 public class BaseApiTest {
 
     protected static RequestSpecification reqSpec;
-    //protected static ResponseSpecification respSpec;
 
     @BeforeClass
     public static void setUp() {
