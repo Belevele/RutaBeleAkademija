@@ -15,13 +15,12 @@ public class ProductPage extends CommonPage {
     @FindBy(xpath = "//*[@class='fa fa-heart']")
     private WebElement buttonWishList;
 
-    @FindBy(id = "button-cart")
+    @FindBy(xpath = "//*[contains(text(),'Add to Cart')]")
     private WebElement buttonCart;
 
     // others
     @FindBy(xpath = "//img[@title='iPod Classic']")
     private WebElement ipodClassic;
-
 
     public ProductPage(WebDriver driver) {
         super(driver);
@@ -33,6 +32,10 @@ public class ProductPage extends CommonPage {
 
     public void selectIpodClassic() {
         ipodClassic.click();
+    }
+
+    public void isIpodClassicDisplayed() {
+        ipodClassic.isDisplayed();
     }
 
     public void clickButtonWishList() {

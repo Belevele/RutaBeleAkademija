@@ -28,14 +28,3 @@ public class CommonPage extends AbstractObjectPage {
 
 
 
-//
-
-//    public void openCart() {
-//        if (! listItemsInCart.isDisplayed()) {
-//            buttonCart.click();
-//            WaitUtils.waitForJS(driver);
-//        }
-//    }
-
-//
-

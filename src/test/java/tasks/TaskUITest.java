@@ -8,12 +8,13 @@ import org.testng.annotations.Test;
 import pages.CommonPage;
 import pages.ProductPage;
 import utils.WaitUtils;
+import static org.testng.Assert.assertTrue;
 
 public class TaskUITest extends BaseTest {
 
     private CommonPage commonPage;
     private ProductPage productPage;
-    String partOfActualWishListMessage = " You must ";
+    String partOfExpectedWishListMessage = " You must ";
 
     @Test
        //     (dataProvider = "parameters")
@@ -25,14 +26,22 @@ public class TaskUITest extends BaseTest {
         commonPage.clickButtonMp3Players();
         commonPage.clickButtonShowAllMp3Players();
         productPage.clickShowProductsInList();
+
         productPage.selectIpodClassic();
+
+
+       // productPage.selectIpodClassic();
         productPage.clickButtonWishList();
 
-        //String message = driver.findElement(By.xpath("//*[@class='fa fa-check-circle']")).getText();
-        //System.out.println(message);
-        driver.navigate().refresh();
-        productPage.clickButtonCart();
 
+        String wishListMessage = driver.findElement(By.xpath("//*[@class='fa fa-check-circle']")).getText();
+
+        //assertTrue(driver.findElement(wishListMessage.contains(partOfExpectedWishListMessage)), "Error message is not correct";
+
+        driver.navigate().refresh();
+
+
+        //productPage.clickButtonCart();
     }
 
 

@@ -17,8 +17,10 @@ public class TaskApiTest extends BaseApiTest {
 
         String endpointUsers = "/public-api/users";
         String endpointPosts = "public-api/posts";
-        String endpointPostsID = "/public-api/posts/{id}";
-        String userEmail = new Random().nextInt(1000) + "@gmail.com";
+        //String endpointPostsID = "/public-api/posts/{postID}";
+
+        String userEmail = new Random().nextInt(1000) + "aaa@gmail.com";
+
         //CREATE a new user
 
         Map user = new HashMap();
@@ -31,9 +33,9 @@ public class TaskApiTest extends BaseApiTest {
         int userID = given().
                 spec(reqSpec).
                 body(user).
-                when().
+        when().
                 post(endpointUsers).
-                then().
+        then().
                 log().all().
                 assertThat().
                 body("code", is(201)).
@@ -47,47 +49,56 @@ public class TaskApiTest extends BaseApiTest {
         userPost.put("title", "Success");
         userPost.put("body", "The work is finished");
 
-        given().
+        int postID = given().
                 spec(reqSpec).
                 body(userPost).
-                when().
+        when().
                 post(endpointPosts).
-                then().
+        then().
                 log().all().
                 assertThat().
-                body("code", is(201));
+                body("code", is(201)).
+                extract().
+                path("data.id");
 
         //CHECK that previously created post is saved and post title maches
 
-//        given().
-//                spec(reqSpec).
-//               // queryParam("userId", userID).
-//                queryParam("id", userID).
-//        when().
-//                get(endpointPostsID).
-//        then().
-//                log().all().
-//                assertThat().
-//                body("code", is(200)).
-//                //body("data[1]", notNullValue()).
-//                //body("data[1].id", is(greaterThan(1))).
-//                body("data[2].title", is("Success"));
+        given().
+                spec(reqSpec).
+                queryParam("id", postID).
+        when().
+                get("/public-api/posts/{postID}").
+        then().
+                log().all().
+                assertThat().
+                body("code", is(200)).
+                body("data.title", is("Success"));
 
 
         //DELETE previously created post
         given().
                 spec(reqSpec).
-                pathParam("userId", userID).
+                queryParam("id", postID).
                 log().all().
         when().
-                delete("public-api/users/{userId}").
+                delete("/public-api/posts/{postID}").
         then().
                 assertThat().
                 log().all().
                 body("code", is(204));
 
         //CHECK that your post is no longer retrievable and verify with message
-
+        given().
+                spec(reqSpec).
+                queryParam("id", postID).
+                log().all().
+        when().
+                get("/public-api/posts/{postID}").
+        then().
+                log().all().
+                assertThat().
+                body("code", is(404)).
+                body("data.message", is("Resource not found"));
     }
 }
 
